@@ -1,0 +1,508 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>草鞋墩·玉皇殿</title>
+    
+    <!-- 引入 Google Fonts: Noto Serif TC (思源宋體) 以呈現傳統典雅的風格 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 設定 Tailwind 自訂主題顏色與字體 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif': ['"Noto Serif TC"', 'serif'],
+                    },
+                    colors: {
+                        'temple-bg': '#F6F3EC',       /* 圖片中偏暖的紙張底色 */
+                        'temple-text': '#5D4037',     /* 手繪風深褐色文字 */
+                        'temple-red': '#B94E48',      /* 圖片中柔和的磚紅色 */
+                        'temple-border': '#D6C5B3',   /* 圖片中表格的淺咖啡色邊線 */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F6F3EC;
+            /* 模擬宣紙與水彩畫紙的細微紋理 */
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            overflow-y: scroll; 
+        }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 手繪風格的卡片邊框，模仿圖片中的網格線 */
+        .hand-drawn-card {
+            border: solid 1.5px #D6C5B3;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 2px 3px 0px rgba(214, 197, 179, 0.3);
+        }
+    </style>
+</head>
+<body class="font-serif text-temple-text antialiased min-h-screen flex flex-col relative">
+
+    <!-- 頂部導覽列 -->
+    <nav class="bg-temple-bg/95 backdrop-blur-md sticky top-0 z-40 border-b-2 border-temple-border">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <!-- Logo 與標題區塊 -->
+            <div class="flex items-center gap-2 md:gap-3">
+                <!-- 【Logo 尺寸配合精緻字體，稍微收斂突破比例】 -->
+                <div class="h-10 md:h-12 w-12 md:w-14 relative flex items-center justify-center flex-shrink-0">
+                    <img src="https://raw.githubusercontent.com/anyany999/Jade-Emperor-/main/logo.png" alt="草鞋墩玉皇殿 Logo" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[160%] md:h-[150%] w-auto max-w-none object-contain">
+                </div>
+                
+                <!-- 【印章落款法：標題與 Since 2015 整體再縮小，追求極致精緻感】 -->
+                <div class="flex flex-col items-center justify-center relative z-10 pt-0.5">
+                    <h1 class="font-bold text-[13px] md:text-[14px] text-temple-red tracking-[0.15em] leading-none">草鞋墩·玉皇殿</h1>
+                    <!-- 使用 ml-1 是為了補償字元間距(tracking)造成的視覺偏移，確保真正置中 -->
+                    <span class="text-[8px] md:text-[9px] text-temple-text/50 font-medium tracking-[0.3em] mt-1 text-center ml-1">Since 2015</span>
+                </div>
+            </div>
+
+            <!-- 切換按鈕 -->
+            <div class="flex space-x-1 md:space-x-2 bg-white/50 p-1 rounded-full border border-temple-border/50">
+                <button onclick="switchTab('services')" id="tab-btn-services" class="px-4 md:px-6 py-1.5 md:py-2 text-sm md:text-base font-bold rounded-full transition-all duration-300 bg-temple-red text-white">
+                    服務項目
+                </button>
+                <button onclick="switchTab('products')" id="tab-btn-products" class="px-4 md:px-6 py-1.5 md:py-2 text-sm md:text-base font-bold rounded-full transition-all duration-300 text-temple-text/60 hover:text-temple-text">
+                    結緣品
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 頁面主要內容區 -->
+    <main class="flex-grow max-w-5xl mx-auto w-full relative z-10 px-4 py-8 md:py-12">
+
+        <!-- ================= 視圖 1: 服務項目 ================= -->
+        <div id="view-services" class="transition-opacity duration-500">
+            <div class="text-center mb-8">
+                <p class="text-temple-text/70 text-sm font-bold tracking-widest inline-block px-4 py-1 border-b border-temple-red/30">
+                    點擊各項服務查看詳細說明
+                </p>
+            </div>
+            
+            <!-- 服務項目網格 -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="services-grid">
+                <!-- 卡片將由 JavaScript 動態生成 -->
+            </div>
+        </div>
+
+        <!-- ================= 視圖 2: 結緣品 ================= -->
+        <div id="view-products" class="hidden opacity-0 transition-opacity duration-500">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-temple-red inline-block border-b-2 border-temple-red pb-2 tracking-widest">結緣品</h2>
+                <p class="mt-4 text-temple-text/80 font-medium tracking-wide">隨身攜帶或擺放，增添吉祥與好磁場</p>
+            </div>
+
+            <!-- 兩大分類網格 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                
+                <!-- 類別：除穢 -->
+                <div class="hand-drawn-card p-8 text-center flex flex-col items-center group hover:bg-white/60 transition-colors cursor-default">
+                    <h3 class="text-2xl font-bold mb-4 text-temple-text">除穢</h3>
+                    <p class="text-temple-text/80 font-medium text-lg mb-8 leading-relaxed">艾草包、平安袋、手鍊、小金虎</p>
+                    
+                    <div class="flex gap-4 justify-center items-end h-32 opacity-90 group-hover:opacity-100 transition-opacity">
+                        <!-- 手繪平安袋 -->
+                        <svg class="w-20 h-20 drop-shadow-sm" viewBox="0 0 100 100" fill="none">
+                            <path d="M50 15 L50 28" stroke="#4A3B32" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M35 30 L65 30 L72 65 Q72 78 50 78 Q28 78 28 65 Z" fill="#B94E48" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+                            <rect x="42" y="45" width="16" height="16" fill="#DDA752" stroke="#4A3B32" stroke-width="1" transform="rotate(45 50 53)"/>
+                            <text x="50" y="58" fill="#4A3B32" font-size="12" font-family="serif" font-weight="bold" text-anchor="middle" dominant-baseline="middle">安</text>
+                            <path d="M50 80 L50 88" stroke="#4A3B32" stroke-width="1.5"/>
+                            <path d="M46 88 L54 88 L56 96 L44 96 Z" fill="#B94E48" stroke="#4A3B32" stroke-width="1" stroke-linejoin="round"/>
+                        </svg>
+                        <!-- 手繪小金虎 -->
+                        <svg class="w-24 h-24 transform translate-y-2 drop-shadow-sm" viewBox="0 0 100 100" fill="none">
+                            <path d="M30 35 Q50 25 70 35 Q85 55 68 75 Q50 85 32 75 Q15 55 30 35 Z" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M26 31 Q35 18 45 29" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M74 31 Q65 18 55 29" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M50 32 L50 42 M44 35 L56 35 M39 39 L61 39" stroke="#4A3B32" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="39" cy="50" r="3.5" fill="#4A3B32"/>
+                            <circle cx="61" cy="50" r="3.5" fill="#4A3B32"/>
+                            <ellipse cx="28" cy="58" rx="5" ry="3" fill="#F2A1A1" opacity="0.9"/>
+                            <ellipse cx="72" cy="58" rx="5" ry="3" fill="#F2A1A1" opacity="0.9"/>
+                            <path d="M50 56 L46 60 Q50 64 54 60 Z" fill="#4A3B32"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- 類別：找好運 -->
+                <div class="hand-drawn-card p-8 text-center flex flex-col items-center group hover:bg-white/60 transition-colors cursor-default">
+                    <h3 class="text-2xl font-bold mb-4 text-temple-text">找好運</h3>
+                    <p class="text-temple-text/80 font-medium text-lg mb-8 leading-relaxed">香氛、樹化玉、紫晶洞、神獸、手鍊</p>
+                    
+                    <div class="flex gap-4 justify-center items-end h-32 opacity-90 group-hover:opacity-100 transition-opacity">
+                        <!-- 手繪紫水晶洞 -->
+                        <svg class="w-20 h-20 drop-shadow-sm" viewBox="0 0 100 100" fill="none">
+                            <path d="M22 80 C 22 45 42 25 50 25 C 58 25 78 45 78 80 Z" fill="#8B7D9E" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M30 80 L50 45 L70 80 Z" fill="#6A5B7E" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M40 80 L50 55 L60 80 Z" fill="#A89CB8" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+                        </svg>
+                        <!-- 手繪手鍊 -->
+                        <svg class="w-24 h-24 drop-shadow-sm" viewBox="0 0 100 100" fill="none">
+                            <circle cx="50" cy="50" r="28" stroke="#B94E48" stroke-width="1.5" stroke-dasharray="2 4"/>
+                            <circle cx="50" cy="22" r="6" fill="#8B7D9E" stroke="#4A3B32" stroke-width="1.5"/>
+                            <circle cx="70" cy="30" r="5" fill="#6A5B7E" stroke="#4A3B32" stroke-width="1.5"/>
+                            <circle cx="78" cy="50" r="5" fill="#A89CB8" stroke="#4A3B32" stroke-width="1.5"/>
+                            <circle cx="70" cy="70" r="5" fill="#6A5B7E" stroke="#4A3B32" stroke-width="1.5"/>
+                            <circle cx="50" cy="78" r="5" fill="#8B7D9E" stroke="#4A3B32" stroke-width="1.5"/>
+                            <circle cx="30" cy="70" r="5" fill="#A89CB8" stroke="#4A3B32" stroke-width="1.5"/>
+                            <circle cx="22" cy="50" r="5" fill="#6A5B7E" stroke="#4A3B32" stroke-width="1.5"/>
+                            <circle cx="30" cy="30" r="5" fill="#A89CB8" stroke="#4A3B32" stroke-width="1.5"/>
+                            <path d="M45 15 L55 15 L55 25 L45 25 Z" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" transform="rotate(45 50 20)" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center pb-6 pt-4 text-sm text-temple-text/50 font-medium w-full relative z-10 mt-auto border-t-2 border-temple-border/60">
+        <p>&copy; 2026 草鞋墩·玉皇殿. 保留所有權利。</p>
+    </footer>
+
+    <!-- ================= 彈出視窗 Modal ================= -->
+    <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center px-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <!-- 點擊背景關閉 -->
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onclick="closeModal()"></div>
+        
+        <!-- 彈出框主體 -->
+        <div class="bg-[#FDFBF6] border-2 border-[#D6C5B3] w-full max-w-lg rounded-xl shadow-2xl relative z-10 transform scale-95 transition-transform duration-300 flex flex-col max-h-[85vh]" id="modal-content-box">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-temple-text/50 hover:text-temple-red bg-white rounded-full p-1.5 shadow-sm transition z-20 border border-temple-border">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="p-6 md:p-8 overflow-y-auto no-scrollbar relative">
+                <div class="flex items-center gap-4 mb-5 border-b-2 border-temple-border/50 pb-4 relative z-10" id="modal-header">
+                    <!-- Icon, Title inserted here via JS -->
+                </div>
+                
+                <div id="modal-body" class="text-base md:text-lg leading-relaxed text-temple-text/90 font-medium space-y-4 relative z-10">
+                    <!-- Text inserted here via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 邏輯：渲染卡片與控制彈出視窗 -->
+    <script>
+        // ----------------------------------------------------------------------
+        // 【1. 預先定義所有手繪風格 SVG】
+        // ----------------------------------------------------------------------
+        
+        // 精緻金爐插香 (進庫、運勢提升)
+        const svgFurnace = `<svg class="w-16 h-16 drop-shadow-sm" viewBox="0 0 100 100" fill="none">
+            <!-- 煙霧 -->
+            <path d="M50 35 Q40 20 50 10" stroke="#B0A89F" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M42 35 Q30 20 40 5" stroke="#B0A89F" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M58 35 Q70 20 60 5" stroke="#B0A89F" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <!-- 香與火光 -->
+            <line x1="50" y1="50" x2="50" y2="25" stroke="#4A3B32" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="50" y1="25" x2="50" y2="22" stroke="#E27D60" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="42" y1="48" x2="38" y2="28" stroke="#4A3B32" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="38" y1="28" x2="37" y2="25" stroke="#E27D60" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="58" y1="48" x2="62" y2="28" stroke="#4A3B32" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="62" y1="28" x2="63" y2="25" stroke="#E27D60" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- 爐耳 -->
+            <path d="M30 55 C20 50 15 65 25 70" fill="none" stroke="#DDA752" stroke-width="4" stroke-linecap="round"/>
+            <path d="M30 55 C20 50 15 65 25 70" fill="none" stroke="#4A3B32" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M70 55 C80 50 85 65 75 70" fill="none" stroke="#DDA752" stroke-width="4" stroke-linecap="round"/>
+            <path d="M70 55 C80 50 85 65 75 70" fill="none" stroke="#4A3B32" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- 爐身 -->
+            <path d="M35 50 Q50 45 65 50 L70 70 Q50 85 30 70 Z" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <ellipse cx="50" cy="50" rx="18" ry="4" fill="#E8C37C" stroke="#4A3B32" stroke-width="1.5"/>
+            <!-- 爐身裝飾 (雲紋/八卦意象) -->
+            <circle cx="50" cy="65" r="5" fill="#C18F42" stroke="#4A3B32" stroke-width="1"/>
+            <path d="M40 65 Q50 75 60 65" stroke="#C18F42" stroke-width="1.5" fill="none"/>
+            <!-- 爐腳 -->
+            <path d="M40 78 L35 88 M60 78 L65 88 M50 80 L50 90" stroke="#4A3B32" stroke-width="3" stroke-linecap="round"/>
+        </svg>`;
+
+        // 精緻蠟燭 (元神燈)
+        const svgCandle = `<svg class="w-16 h-16 drop-shadow-sm" viewBox="0 0 100 100" fill="none">
+            <!-- 光暈 -->
+            <circle cx="50" cy="30" r="20" fill="#F3D580" opacity="0.4"/>
+            <circle cx="50" cy="30" r="10" fill="#F3D580" opacity="0.6"/>
+            <!-- 燭台底座 -->
+            <path d="M35 85 L65 85 L60 75 L40 75 Z" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M42 75 L58 75 L55 65 L45 65 Z" fill="#E8C37C" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- 蠟燭主體 -->
+            <rect x="42" y="45" width="16" height="20" fill="#B94E48" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- 蠟淚 (滴下的蠟) -->
+            <path d="M42 45 Q40 55 42 60" fill="#B94E48" stroke="#4A3B32" stroke-width="1.5"/>
+            <path d="M58 45 Q60 52 58 55" fill="#B94E48" stroke="#4A3B32" stroke-width="1.5"/>
+            <path d="M48 45 L48 55" stroke="#8C3632" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M52 45 L52 50" stroke="#8C3632" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- 燭芯 -->
+            <line x1="50" y1="45" x2="50" y2="38" stroke="#4A3B32" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- 火焰 -->
+            <path d="M50 15 Q40 30 50 40 Q60 30 50 15 Z" fill="#F4D03F" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M50 25 Q46 32 50 36 Q54 32 50 25 Z" fill="#E27D60"/>
+        </svg>`;
+
+        // 精緻三腳金蟾蜍
+        const svgToad = `<svg class="w-16 h-16 drop-shadow-sm" viewBox="0 0 100 100" fill="none">
+            <!-- 銅錢底座 -->
+            <circle cx="35" cy="80" r="10" fill="#E8C37C" stroke="#4A3B32" stroke-width="1.5"/>
+            <rect x="32" y="77" width="6" height="6" fill="#4A3B32"/>
+            <circle cx="65" cy="80" r="10" fill="#E8C37C" stroke="#4A3B32" stroke-width="1.5"/>
+            <rect x="62" y="77" width="6" height="6" fill="#4A3B32"/>
+            <circle cx="50" cy="85" r="12" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5"/>
+            <rect x="46" y="81" width="8" height="8" fill="#4A3B32"/>
+            <!-- 蟾蜍主體 -->
+            <path d="M25 70 Q25 40 50 40 Q75 40 75 70 L25 70 Z" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- 腿部 -->
+            <path d="M25 60 C15 65 15 75 25 80" fill="none" stroke="#C18F42" stroke-width="6" stroke-linecap="round"/>
+            <path d="M25 60 C15 65 15 75 25 80" fill="none" stroke="#4A3B32" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M75 60 C85 65 85 75 75 80" fill="none" stroke="#C18F42" stroke-width="6" stroke-linecap="round"/>
+            <path d="M75 60 C85 65 85 75 75 80" fill="none" stroke="#4A3B32" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- 背部疙瘩 -->
+            <circle cx="40" cy="50" r="2.5" fill="#C18F42" stroke="#4A3B32" stroke-width="1"/>
+            <circle cx="60" cy="50" r="2.5" fill="#C18F42" stroke="#4A3B32" stroke-width="1"/>
+            <circle cx="50" cy="45" r="2.5" fill="#C18F42" stroke="#4A3B32" stroke-width="1"/>
+            <circle cx="45" cy="58" r="3.5" fill="#C18F42" stroke="#4A3B32" stroke-width="1"/>
+            <circle cx="55" cy="58" r="3.5" fill="#C18F42" stroke="#4A3B32" stroke-width="1"/>
+            <circle cx="50" cy="68" r="2.5" fill="#C18F42" stroke="#4A3B32" stroke-width="1"/>
+            <!-- 眼睛與嘴 -->
+            <circle cx="35" cy="45" r="4" fill="#FDFBF6" stroke="#4A3B32" stroke-width="1.5"/>
+            <circle cx="35" cy="45" r="2" fill="#B94E48"/>
+            <circle cx="65" cy="45" r="4" fill="#FDFBF6" stroke="#4A3B32" stroke-width="1.5"/>
+            <circle cx="65" cy="45" r="2" fill="#B94E48"/>
+            <path d="M40 55 Q50 60 60 55" stroke="#4A3B32" stroke-width="1.5" fill="none"/>
+            <!-- 嘴裡的銅錢 -->
+            <ellipse cx="50" cy="58" rx="8" ry="4" fill="#F3D580" stroke="#4A3B32" stroke-width="1.5"/>
+            <rect x="48" y="56" width="4" height="4" fill="#4A3B32"/>
+        </svg>`;
+
+        // 精緻神明 (請神尊)
+        const svgDeity = `<svg class="w-16 h-16 drop-shadow-sm" viewBox="0 0 100 100" fill="none">
+            <!-- 冠冕 (天公帽風格) -->
+            <path d="M25 30 L75 30 L70 18 L30 18 Z" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <rect x="38" y="14" width="24" height="4" fill="#B94E48" stroke="#4A3B32" stroke-width="1.5"/>
+            <!-- 冠冕垂珠 -->
+            <line x1="25" y1="30" x2="25" y2="45" stroke="#4A3B32" stroke-width="1"/>
+            <circle cx="25" cy="47" r="2" fill="#B94E48"/>
+            <line x1="75" y1="30" x2="75" y2="45" stroke="#4A3B32" stroke-width="1"/>
+            <circle cx="75" cy="47" r="2" fill="#B94E48"/>
+            <!-- 臉部 -->
+            <path d="M35 30 L65 30 L60 55 Q50 65 40 55 Z" fill="#F5CBA7" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M42 42 Q45 40 48 42 M58 42 Q55 40 52 42" stroke="#4A3B32" stroke-width="1.5" fill="none"/>
+            <path d="M48 50 Q50 52 52 50" stroke="#4A3B32" stroke-width="1.5" fill="none"/>
+            <!-- 鬍鬚 -->
+            <path d="M40 55 L40 75 Q50 85 60 75 L60 55 Z" fill="#333333" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- 身體/道袍 -->
+            <path d="M30 50 Q18 70 20 90 L80 90 Q82 70 70 50 Z" fill="#B94E48" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M40 60 L50 75 L60 60" fill="#E8C37C" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- 雙手抱笏板 -->
+            <rect x="45" y="65" width="10" height="20" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" transform="rotate(-15 50 75)"/>
+        </svg>`;
+
+        // 精緻印章 (取名服務)
+        const svgSeal = `<svg class="w-16 h-16 drop-shadow-sm" viewBox="0 0 100 100" fill="none">
+            <!-- 底部印面/紙張的紅印 -->
+            <path d="M30 85 L70 85 L65 75 L35 75 Z" fill="#B94E48" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M38 85 L40 92 L46 87 L50 92 L54 87 L60 92 L62 85" stroke="#B94E48" stroke-width="2" fill="none" stroke-linejoin="round"/> 
+            <!-- 印章主體 (立體感) -->
+            <path d="M40 35 L60 35 L70 75 L30 75 Z" fill="#E8C37C" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M40 35 L30 75 L35 75 L45 35 Z" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5"/> 
+            <!-- 頂部印紐 (神獸造型簡化) -->
+            <path d="M40 35 L60 35 L55 20 Q50 15 45 20 Z" fill="#C18F42" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/>
+            <circle cx="48" cy="25" r="2.5" fill="#4A3B32"/>
+            <circle cx="52" cy="25" r="2.5" fill="#4A3B32"/>
+            <path d="M45 15 Q50 10 55 15" stroke="#4A3B32" stroke-width="1.5" fill="none"/>
+            <path d="M40 35 L60 35" stroke="#4A3B32" stroke-width="2"/>
+        </svg>`;
+
+        // 沿用原圖風格的 SVG
+        const svgStore = `<svg class="w-16 h-16 drop-shadow-sm" viewBox="0 0 100 100" fill="none"><rect x="25" y="45" width="50" height="35" fill="#95A5A6" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><rect x="42" y="55" width="16" height="25" fill="#2C3E50" stroke="#4A3B32" stroke-width="1.5"/><rect x="28" y="55" width="10" height="12" fill="#D6EAF8" stroke="#4A3B32" stroke-width="1.5"/><path d="M20 45 L80 45 L75 25 L25 25 Z" fill="#FDFBF6" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><path d="M30 25 L33 45 M40 25 L43 45 M50 25 L50 45 M60 25 L57 45 M70 25 L67 45" stroke="#B94E48" stroke-width="4"/><path d="M20 45 Q22 50 25 45 Q27 50 30 45 Q32 50 35 45 Q37 50 40 45 Q42 50 45 45 Q47 50 50 45 Q52 50 55 45 Q57 50 60 45 Q62 50 65 45 Q67 50 70 45 Q72 50 75 45 Q77 50 80 45" fill="#FDFBF6" stroke="#4A3B32" stroke-width="1.5"/><rect x="65" y="55" width="8" height="15" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5"/><path d="M22 80 L22 65" stroke="#4A3B32" stroke-width="1.5"/><circle cx="22" cy="62" r="5" fill="#27AE60" stroke="#4A3B32" stroke-width="1.5"/></svg>`;
+        
+        const svgPaper = `<svg class="w-16 h-16 drop-shadow-sm" viewBox="0 0 100 100" fill="none"><polygon points="25,75 75,65 85,45 35,55" fill="#E8C37C" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><polygon points="25,75 25,80 75,70 75,65" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><polygon points="75,70 85,50 85,45 75,65" fill="#C18F42" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><polygon points="20,65 70,60 80,40 30,45" fill="#F3D580" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><polygon points="20,65 20,70 70,65 70,60" fill="#E8C37C" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><polygon points="70,65 80,45 80,40 70,60" fill="#DDA752" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><polygon points="35,58 65,54 71,43 41,47" fill="#B94E48" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><polygon points="43,54 57,52 61,45 47,47" fill="#F4D03F" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><line x1="45" y1="46" x2="45" y2="68" stroke="#B94E48" stroke-width="1.5"/><line x1="55" y1="44" x2="55" y2="66" stroke="#B94E48" stroke-width="1.5"/></svg>`;
+        
+        const svgGhost = `<svg class="w-16 h-16 drop-shadow-sm" viewBox="0 0 100 100" fill="none"><path d="M 35 65 C 35 40, 65 40, 65 65 C 65 72, 72 75, 75 80 C 75 88, 65 88, 58 82 C 55 79, 50 82, 47 80 C 43 78, 38 82, 35 80 C 30 78, 25 88, 25 80 C 25 75, 35 72, 35 65 Z" fill="#FDFBF6" stroke="#4A3B32" stroke-width="1.5" stroke-linejoin="round"/><circle cx="45" cy="52" r="2.5" fill="#4A3B32"/><circle cx="58" cy="52" r="2.5" fill="#4A3B32"/><path d="M 49 55 Q 51.5 58 54 55" fill="none" stroke="#4A3B32" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="40" cy="56" rx="4" ry="2.5" fill="#F2A1A1" opacity="0.9"/><ellipse cx="63" cy="56" rx="4" ry="2.5" fill="#F2A1A1" opacity="0.9"/><path d="M 35 55 Q 40 60 38 65" fill="none" stroke="#4A3B32" stroke-width="1.5" stroke-linecap="round"/><path d="M 75 40 L 78 45 M 78 40 L 75 45" stroke="#4A3B32" stroke-width="1" stroke-linecap="round"/></svg>`;
+
+        // ----------------------------------------------------------------------
+        // 【2. 定義內容與陣列】
+        // ----------------------------------------------------------------------
+        const servicesData = [
+            {
+                title: "進庫",
+                desc: "透過每個月恭請神尊降文，來補無形財與庫、添福分、提醒注意事項（如車關大事化小）<br><br><span class='text-temple-red'>通過代言人以唱文方式補運</span>",
+                icon: svgFurnace
+            },
+            {
+                title: "運勢提升",
+                desc: "透過神尊敕令與材料核對結合的方式，來針對錢財、業績、運程等做提升",
+                icon: svgFurnace
+            },
+            {
+                title: "元神燈",
+                subtitle: "（個人／七星燈）",
+                desc: "透過每日更換、點燈、加持方式，守護自身的元辰（運勢、氣場穩定、事業運、健康、精氣神、官司等）<br><br>讓我們在外也能夠長時間的被輔助",
+                icon: svgCandle
+            },
+            {
+                title: "請神尊",
+                desc: "家中本有供奉神尊、希望確認是否為正神、或恭請神尊安座等，將透過敕令恭請玉皇開光入神，陪伴我們在習修路上有無形師能陪伴我們成長",
+                icon: svgDeity
+            },
+            {
+                title: "請三腳金蟾蜍",
+                subtitle: "（神獸）",
+                desc: "與仿間不同方式為：恭請神尊開個人功果簿，來確認因緣或運勢適不適合，或神獸種類<br><br>透過神尊敕令後賦予靈性，建立與當事者之間的連結，開始為你的財流、小人、咬煞或鎮宅等開始運作",
+                icon: svgToad
+            },
+            {
+                title: "開地理",
+                desc: "有形的格局在有限的提升下，透過神尊協助與提點打開並提升住家、店、公司無形的結界、磁場、淨化、查看家中無形等",
+                icon: svgStore
+            },
+            {
+                title: "靈體調整",
+                desc: "透過開陣來提升自己的靈性與修復自身的能量，產生適當的防護罩或靈性成長<br><br><span class='inline-block mt-2 px-3 py-1 bg-white text-temple-red border border-temple-red/50 rounded text-sm font-bold'>（場地有限，暫無服務）</span>",
+                icon: svgGhost,
+                badge: "暫無服務"
+            },
+            {
+                title: "草人脫身",
+                desc: "在神尊敕令的過程，透過草人脫身儀式，將近期累積的濁氣、負能量、與不順等，轉嫁於「草人、焚化金紙」方式化解送走<br><br>當你情緒低落、思緒混亂、車關、人事困擾、運程低落、眾生干擾、犯小人或官司纏訟糾紛、身體反覆不適等，皆可",
+                icon: svgPaper
+            },
+            {
+                title: "外煞（靈）",
+                desc: "出入各種場合時，往往容易與無形擦身而過，過程中可能沾染晦氣或卡到無形<br><br>這時候可以恭請神尊協助處理或排解",
+                icon: svgGhost
+            },
+            {
+                title: "祖源（先）",
+                desc: "祖先的順與不順往往牽涉著後世子孫，祖先裡面若有拜雙姓（不同姓氏）、非自然死亡（病、車禍等）、倒房（未生子離世）等情況，通常會先影響到後世男丁<br><br>所有以上情況，可請示神尊透過多少的材料、次數、呈文等讓祖先能夠回到輪迴的正軌",
+                icon: svgGhost
+            },
+            {
+                title: "冤親債主",
+                desc: "過去世當中，曾有因果（傷害、愛、牽扯事件等）牽連之有緣人<br><br>亦可以恭請神尊做主，與之和解",
+                icon: svgPaper
+            },
+            {
+                title: "取名服務",
+                desc: "費用皆含開運印鑑章<br><br>對象：<br>1、新生兒（含剖腹擇日）<br>2、公司行號/企業社/股份有限公司等<br>　（含大小章）<br>3、個人姓名",
+                icon: svgSeal
+            }
+        ];
+
+        // ----------------------------------------------------------------------
+        // 【3. 渲染卡片並綁定點擊事件】
+        // ----------------------------------------------------------------------
+        const gridContainer = document.getElementById('services-grid');
+        
+        servicesData.forEach((item, index) => {
+            const badgeHtml = item.badge 
+                ? `<div class="absolute top-2 right-2 bg-white text-temple-red text-[11px] font-bold px-2 py-0.5 rounded-sm border border-temple-red/30">${item.badge}</div>` 
+                : '';
+            
+            const subtitleHtml = item.subtitle 
+                ? `<div class="text-[13px] text-temple-text/60 font-medium mt-1">${item.subtitle}</div>` 
+                : '';
+
+            const card = document.createElement('div');
+            card.className = "hand-drawn-card p-5 md:p-6 hover:bg-white/60 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center text-center group transform hover:-translate-y-1 relative";
+            
+            card.addEventListener('click', function() {
+                openModal(index);
+            });
+            
+            card.innerHTML = `
+                ${badgeHtml}
+                <div class="mb-3 transform group-hover:scale-105 transition-transform duration-300 opacity-90 group-hover:opacity-100">
+                    ${item.icon}
+                </div>
+                <h3 class="text-lg md:text-xl font-bold text-temple-text tracking-wide">${item.title}</h3>
+                ${subtitleHtml}
+            `;
+            
+            gridContainer.appendChild(card);
+        });
+
+        // ----------------------------------------------------------------------
+        // 【4. 標籤切換與 Modal 控制邏輯】
+        // ----------------------------------------------------------------------
+        function switchTab(tabId) {
+            const viewServices = document.getElementById('view-services');
+            const viewProducts = document.getElementById('view-products');
+            const btnServices = document.getElementById('tab-btn-services');
+            const btnProducts = document.getElementById('tab-btn-products');
+
+            if (tabId === 'services') {
+                viewServices.classList.remove('hidden');
+                setTimeout(() => viewServices.classList.remove('opacity-0'), 50);
+                viewProducts.classList.add('opacity-0');
+                setTimeout(() => viewProducts.classList.add('hidden'), 300);
+
+                btnServices.className = "px-4 md:px-6 py-1.5 md:py-2 text-sm md:text-base font-bold rounded-full transition-all duration-300 bg-temple-red text-white";
+                btnProducts.className = "px-4 md:px-6 py-1.5 md:py-2 text-sm md:text-base font-bold rounded-full transition-all duration-300 text-temple-text/60 hover:text-temple-text";
+            } else {
+                viewProducts.classList.remove('hidden');
+                setTimeout(() => viewProducts.classList.remove('opacity-0'), 50);
+                viewServices.classList.add('opacity-0');
+                setTimeout(() => viewServices.classList.add('hidden'), 300);
+
+                btnProducts.className = "px-4 md:px-6 py-1.5 md:py-2 text-sm md:text-base font-bold rounded-full transition-all duration-300 bg-[#C18F42] text-white";
+                btnServices.className = "px-4 md:px-6 py-1.5 md:py-2 text-sm md:text-base font-bold rounded-full transition-all duration-300 text-temple-text/60 hover:text-temple-text";
+            }
+        }
+
+        const modal = document.getElementById('detail-modal');
+        const modalBox = document.getElementById('modal-content-box');
+        
+        function openModal(index) {
+            if (!servicesData[index]) return;
+            
+            const data = servicesData[index];
+            const subtitleHtml = data.subtitle ? `<span class="text-base text-temple-text/60 ml-2 font-normal">${data.subtitle}</span>` : '';
+            
+            // 寫入標題與圖示
+            document.getElementById('modal-header').innerHTML = `
+                <div class="bg-white rounded-full p-2 border border-temple-border shadow-sm flex-shrink-0">${data.icon}</div>
+                <h2 class="text-2xl font-bold text-temple-red tracking-wide">${data.title}${subtitleHtml}</h2>
+            `;
+            
+            // 寫入詳細文字內容
+            document.getElementById('modal-body').innerHTML = data.desc;
+
+            // 顯示彈出視窗
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalBox.classList.remove('scale-95');
+            modalBox.classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalBox.classList.remove('scale-100');
+            modalBox.classList.add('scale-95');
+            document.body.style.overflow = '';
+        }
+    </script>
+</body>
+</html>
+
+
+```
